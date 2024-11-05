@@ -1,0 +1,11 @@
+#PBS -lselect=1:ncpus=8:ngpus=1:mem=10gb
+#PBS -lwalltime=24:00:0
+#PBS -qgpu 
+
+module load anaconda3
+cd $PBS_O_WORKDIR
+
+source activate /storage/brno14-ceitec/shared/softmatter/shakespearem/.conda/envs/omm/
+export OPENMM_PLUGIN_DIR=/storage/brno14-ceitec/shared/softmatter/shakespearem/.conda/envs/omm/lib/plugins
+
+python combined.py --temperature $TEMPERATURE --model $MODEL --protein_num $PROTEIN_NUM

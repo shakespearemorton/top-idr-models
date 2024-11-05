@@ -1,0 +1,16 @@
+#PBS -lselect=1:ncpus=16:mem=100gb
+#PBS -lwalltime=24:00:0
+#PBS -qcpu
+
+module load anaconda3
+module load openmpi
+cd $PBS_O_WORKDIR
+
+source activate /storage/brno14-ceitec/shared/softmatter/shakespearem/.conda/envs/omm/
+
+python combined.py --temperature $TEMPERATURE --model $MODEL --protein_num $PROTEIN_NUM
+
+LAMMPS_EXEC="/storage/brno14-ceitec/shared/softmatter/shakespearem/mylammps/build-kokkos-openmp-mpi/lmp"
+INPUT_FILE="simple.in"
+
+mpirun -np 16 $LAMMPS_EXEC -in $INPUT_FILE -var $TEMPERATURE
